@@ -73,7 +73,9 @@ public class ArticleDao {
 	}
 
 	public ArrayList<Article> getsortedArticles(String sortFlag, String sortType) {
-		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.mid = m.id where order by ? ?";
+		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.mid = m.id";
+		String sql2 = "where like asc";
+		sql = sql + sql2;
 		return db.getRows(sql, new ArticleRowMapper(), sortFlag, sortType);
 	}
 
