@@ -12,13 +12,13 @@ public class ReplyRowMapper implements RowMapper<Reply> {
 		int aid = rs.getInt("aid");
 		int id = rs.getInt("id");
 		String body = rs.getString("body");
-		String writer = rs.getString("writer");
+		String nickname = rs.getString("nickname");
 		String regDate = rs.getString("regDate");
 
 		Reply reply= new Reply();
 		reply.setParentId(aid);
 		reply.setBody(body);
-		reply.setWriter(writer);
+		reply.setnickname(nickname);
 		reply.setId(id);
 		reply.setRegDate(regDate);
 		

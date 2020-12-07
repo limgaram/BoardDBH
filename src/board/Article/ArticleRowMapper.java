@@ -4,10 +4,10 @@ import java.sql.SQLException;
 
 import borad.RowMapper;
 
-public class ArticleRowMapper implements RowMapper {
+public class ArticleRowMapper implements RowMapper<Article> {
 
 	@Override
-	public Object getRow(ResultSet rs) throws SQLException {
+	public Article getRow(ResultSet rs) throws SQLException {
 		
 		String title = rs.getString("title");
 		int id = rs.getInt("id");
