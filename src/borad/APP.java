@@ -30,14 +30,14 @@ public class APP {
 
 				}
 			} else if (cmd.equals("update")) {
-				if(islogin()) {
+				if (islogin()) {
 					updateArticle();
-					
+
 				}
 			} else if (cmd.equals("delete")) {
-				if(islogin()) {
+				if (islogin()) {
 					deleteArticle();
-					
+
 				}
 			} else if (cmd.equals("read")) {
 				readArticle();
@@ -62,7 +62,7 @@ public class APP {
 		String sortFlag = sc.nextLine();
 		System.out.println("정렬 방법을 선택해주세요. (asc : 오름차순, desc : 내림차순)");
 		String sortType = sc.nextLine();
-		
+
 		ArrayList<Article> sortedArticles = articleDao.getsortedArticles(sortFlag, sortType);
 	}
 
@@ -127,13 +127,15 @@ public class APP {
 		System.out.println("상세보기 할 게시물 번호 : ");
 		int aid = Integer.parseInt(sc.nextLine());
 
-		//상세보기 할 게시물 가져오기.
+		// 상세보기 할 게시물 가져오기.
 		Article article = articleDao.getArticleById(aid);
-		
+
 		if (article == null) {
+			
 			System.out.println("없는 게시물입니다.");
 		} else {
-			//아이디에 따른 댓글들 가져오기.
+			
+			// 아이디에 따른 댓글들 가져오기.
 			ArrayList<Reply> replies = articleDao.getRepliesByArticleId(article.getId());
 			article = articleDao.getArticleById(aid);
 
@@ -144,7 +146,7 @@ public class APP {
 				System.out.println("상세보기 기능을 선택해주세요");
 				System.out.println("(1. 댓글 등록, 2. 좋아요, 3. 수정, 4. 삭제, 5. 목록으로) : ");
 				int dcmd = Integer.parseInt(sc.nextLine());
-				
+
 				if (dcmd == 1) {
 					System.out.println("내용을 입력해주세요 : ");
 					String body = sc.nextLine();
@@ -152,10 +154,24 @@ public class APP {
 					// Q.replies2
 					ArrayList<Reply> replies2 = articleDao.getRepliesByArticleId(article.getId());
 					printArticle(article, replies2);
-				} else if(dcmd == 2) {
+
+				} else if (dcmd == 2) {
 					
-				}
-				else {
+					int like = loginedMember.getId();
+					
+					if(like ==  ) {
+						
+						like = articleDao.insertLike(article.getId());
+						printArticle(article, replies);
+				
+					} else {
+						
+						like = articleDao.deleteLike(article.getId());
+						printArticle(article, replies);
+						
+					}
+
+				} else {
 					break;
 				}
 			}

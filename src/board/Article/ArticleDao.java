@@ -9,7 +9,7 @@ public class ArticleDao {
 	private DBUtil db = new DBUtil();
 
 	public ArrayList<Article> getArticles() {
-		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.mid = m.id";
+		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.id = m.id";
 		return db.getRows(sql, new ArticleRowMapper());
 	}
 
@@ -30,7 +30,7 @@ public class ArticleDao {
 	}
 
 	public Article getArticleById(int aid) {
-		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.mid = m.id where a.id = ?";
+		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.id = m.id where a.id = ?";
 		return db.getRow(sql, new ArticleRowMapper(), aid);
 	}
 
@@ -44,7 +44,7 @@ public class ArticleDao {
 		return db.updateQuery(sql, id, body);
 
 	}
-	
+
 	public int increaseHitByArticleId(int id) {
 		String sql = "update article set hit = hit + 1 where id = ? ";
 		return db.updateQuery(sql, id);
@@ -73,10 +73,21 @@ public class ArticleDao {
 	}
 
 	public ArrayList<Article> getsortedArticles(String sortFlag, String sortType) {
-		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.mid = m.id";
+		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.id = m.id";
 		String sql2 = "where like asc";
 		sql = sql + sql2;
 		return db.getRows(sql, new ArticleRowMapper(), sortFlag, sortType);
+	}
+
+	public int insertLike(int id) {
+		String sql = "update article set like = like + 1 where id = ?";
+		return db.updateQuery(sql, id);
+
+	}
+
+	public int deleteLike(int id) {
+		String sql = "update article set like = like - 1 where id = ?";
+		return db.updateQuery(sql, id);
 	}
 
 }
