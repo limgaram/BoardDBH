@@ -72,22 +72,31 @@ public class ArticleDao {
 		return db.getRow(sql, new ArticleRowMapper(), title, body);
 	}
 
-	public ArrayList<Article> getsortedArticles(String sortFlag, String sortType) {
-		String sql = "select a.*, m.nickname nickname from article a inner join `member` m on a.id = m.id";
-		String sql2 = "where like asc";
-		sql = sql + sql2;
-		return db.getRows(sql, new ArticleRowMapper(), sortFlag, sortType);
+	public ArrayList<Article> getSortedArticles(String sortFlag, String sortType) {
+		
+		String sql1 = "SELECT a.*, m.nickname FROM article a INNER JOIN `member` m ON a.mid = m.id ORDER BY ";
+		String sql2 = sortFlag + " " + sortType;
+		
+		String sql = sql1 + sql2;
+		
+		return db.getRows(sql, new ArticleRowMapper());
+		
 	}
 
-	public int insertLike(int id) {
-		String sql = "update article set like = like + 1 where id = ?";
-		return db.updateQuery(sql, id);
-
+	public Like getLike(int aid, int mid) {
+		
+		String sql = "select * from `like` where aid = ? and `mid` = ?";
+		return db.getRow(sql, new LikeRowMapper(), aid, mid); 
 	}
 
-	public int deleteLike(int id) {
-		String sql = "update article set like = like - 1 where id = ?";
-		return db.updateQuery(sql, id);
+	public void deleteLike(int aid, int mid) {
+		String sql = "delete from `like` where aid = ? and `mid` = ?";
+		db.updateQuery(sql, aid, mid);
+	}
+	
+	public void insertLike(int aid, int mid) {
+		String sql = "insert into `like` set aid = ?, `mid` = ?, regDate = NOW()";
+		db.updateQuery(sql, aid, mid);
 	}
 
 }

@@ -7,12 +7,13 @@ public class Article {
 	private String body;
 	private String regDate;
 	private int hit;
+	private int LikeCnt;
 
 	public Article() {
 
 	}
 
-	public Article(int id, String title, String nickname, String body, String regDate, int hit) {
+	public Article(int id, String title, String nickname, String body, String regDate, int hit, int LikeCnt) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -20,6 +21,7 @@ public class Article {
 		this.body = body;
 		this.regDate = regDate;
 		this.hit = hit;
+		this.LikeCnt = LikeCnt;
 	}
 
 	public int getId() {
@@ -68,6 +70,14 @@ public class Article {
 
 	public void setHit(int hit) {
 		this.hit = hit;
+	}
+
+	public void setLikeCnt(int LikeCnt) {
+		this.hit = hit;
+	}
+	
+	public int getLikeCnt() {
+		return LikeCnt;
 	}
 
 }

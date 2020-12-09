@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import board.Article.Article;
 import board.Article.ArticleDao;
+import board.Article.Like;
 import board.Article.Reply;
 import board.Member.Member;
 import board.Member.MemberDao;
@@ -49,6 +50,8 @@ public class APP {
 				articleSearch();
 			} else if (cmd.equals("sort")) {
 				articleSort();
+			} else if (cmd.equals("page")) {
+				articlePage();
 			} else {
 				notACommand();
 			}
@@ -63,7 +66,7 @@ public class APP {
 		System.out.println("정렬 방법을 선택해주세요. (asc : 오름차순, desc : 내림차순)");
 		String sortType = sc.nextLine();
 
-		ArrayList<Article> sortedArticles = articleDao.getsortedArticles(sortFlag, sortType);
+		ArrayList<Article> sortedArticles = articleDao.getSortedArticles(sortFlag, sortType);
 	}
 
 	public boolean islogin() {
@@ -131,10 +134,10 @@ public class APP {
 		Article article = articleDao.getArticleById(aid);
 
 		if (article == null) {
-			
+
 			System.out.println("없는 게시물입니다.");
 		} else {
-			
+
 			// 아이디에 따른 댓글들 가져오기.
 			ArrayList<Reply> replies = articleDao.getRepliesByArticleId(article.getId());
 			article = articleDao.getArticleById(aid);
@@ -156,19 +159,24 @@ public class APP {
 					printArticle(article, replies2);
 
 				} else if (dcmd == 2) {
-					
-					int like = loginedMember.getId();
-					
-					if(like ==  ) {
-						
-						like = articleDao.insertLike(article.getId());
-						printArticle(article, replies);
-				
-					} else {
-						
-						like = articleDao.deleteLike(article.getId());
-						printArticle(article, replies);
-						
+
+					if (islogin()) {
+						Like like = articleDao.getLike(article.getId(), loginedMember.getId());
+
+						if (like != null) {
+							System.out.println("좋아요를 해제했습니다.");
+							articleDao.deleteLike(article.getId(), loginedMember.getId());
+						} else {
+							System.out.println("이 게시물을 좋아합니다.");
+							articleDao.insertLike(article.getId(), loginedMember.getId());
+						}
+
+						Article article2 = articleDao.getArticleById(article.getId());
+						System.out.println("aaa : " + article2.getLikeCnt());
+						ArrayList<Reply> replies2 = articleDao.getRepliesByArticleId(article.getId());
+
+						printArticle(article2, replies2);
+
 					}
 
 				} else {
@@ -305,5 +313,14 @@ public class APP {
 			System.out.println("조회수 : " + article.getHit());
 			System.out.println("==================");
 		}
-	}
+		int currentPage = 2;
+		int pageCntInBlock = 5;
+		for(int i =1; i <= pageCntInBlock; i++) {
+			if(i == cureentPage) {
+				System.out.println("[" + i + "]");
+			} else {
+				System.out.println(i + "" );
+			}
+			}
+		}System.out.println();
 }
